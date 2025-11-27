@@ -9,7 +9,7 @@ Heavily inspired on VPM and Paru
 nil <package_name>
 ```
 
-### Installing:
+### Installing from source:
 Depends on:
 - `bash`
 - `fzf`
@@ -33,6 +33,15 @@ cp nil ~/.local/bin
 
 # done!
 ```
+
+### Grabbing a release
+The `.tar.gz` in the releases page contains the `nil-query` binary and the `nil` script.
+Just throw them wherever you find best, honestly. Also don't forget to install `fzf`.
+These two are my personal favourites:
+- `/usr/local/bin`
+- `$HOME/.local/bin`
+
+Make sure that they're in `$PATH` and you're ready to go.
 
 ### Extra info
 #### doas
