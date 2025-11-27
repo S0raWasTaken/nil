@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+package=$1
+
+fatal() {
+    echo -e "[\033[31mfatal\033[0m]" "$@" >&2
+}
+
+usage() {
+    echo "Usage: nil <package_name>" >&2
+}
+
+if [[ ! -n ${package} ]]; then
+    fatal "argument required"
+    usage
+    exit 1
+fi
+
+if [[ $EUID -eq 0 && ! -v $NIL_ROOT ]]; then
+    fatal "This script runs sudo internally, there's no need to run as the root user."
+    fatal "Set the environment NIL_ROOT to whatever to completely ignore this"
+    exit 2
+fi
+
+packages=()
+while IFS= read -r line; do
+    read -ra fields <<< "$line"
+    packages+=("${fields[1]}")
+done < <(nil-query "$package" | fzf -m --ansi)
+
+if [ "${#packages[@]}" -ne 0 ]; then
+    sudo xbps-install -S "${packages[@]}"
+    exit 0
+fi
+
+echo "No operations to be done."
